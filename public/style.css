@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  background: #58140a;
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.book-container {
+  width: 900px;
+  height: 550px;
+}
+
+.page {
+  background: #fff8f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page img,
+.page video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover,
+.end {
+  flex-direction: column;
+  text-align: center;
+}
+
+.cover h1 {
+  font-size: 42px;
+  color: #58140a;
+}
+
+.cover p {
+  letter-spacing: 3px;
+}
+
+.video-page video {
+  box-shadow: none;
+}
