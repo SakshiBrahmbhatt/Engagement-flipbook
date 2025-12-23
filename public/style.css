@@ -8,18 +8,21 @@ body {
   height: 100vh;
 }
 
-.book-container {
-  width: 900px;
-  height: 550px;
+.book-wrapper {
+  width: min(900px, 95vw);
+  height: min(550px, 85vh);
 }
 
+/* Page base */
 .page {
   background: #fff8f2;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* Media */
 .page img,
 .page video {
   width: 100%;
@@ -27,6 +30,7 @@ body {
   object-fit: cover;
 }
 
+/* Cover & End */
 .cover,
 .end {
   flex-direction: column;
@@ -40,8 +44,29 @@ body {
 
 .cover p {
   letter-spacing: 3px;
+  margin-top: 10px;
 }
 
-.video-page video {
-  box-shadow: none;
+.end h2 {
+  color: #58140a;
+}
+
+/* Bottom-right corner click area */
+.corner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+}
+
+/* Visual hint for corner */
+.corner::after {
+  content: "›";
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  font-size: 28px;
+  color: rgba(88, 20, 10, 0.6);
 }

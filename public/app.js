@@ -1,39 +1,42 @@
-const bookEl = document.getElementById("book");
-const music = document.getElementById("bgMusic");
+const bookElement = document.getElementById("book");
 
-const pageFlip = new St.PageFlip(bookEl, {
+const pageFlip = new St.PageFlip(bookElement, {
   width: 400,
   height: 550,
   size: "stretch",
-  maxShadowOpacity: 0.5,
   showCover: true,
-  mobileScrollSupport: false
+  maxShadowOpacity: 0.45,
+  mobileScrollSupport: true
 });
 
+// Load pages
 pageFlip.loadFromHTML(document.querySelectorAll(".page"));
 
-// Play music on first interaction
-let musicStarted = false;
+/* Disable drag & swipe – ONLY click works */
+pageFlip.getSettings().useMouseEvents = false;
+pageFlip.getSettings().useTouchEvents = false;
 
+/* Flip only on bottom corner click */
+document.querySelectorAll(".corner").forEach(corner => {
+  corner.addEventListener("click", () => {
+    pageFlip.flipNext();
+  });
+});
+
+/* Handle video playback */
 pageFlip.on("flip", () => {
-  // Start background music
-  if (!musicStarted) {
-    music.play().catch(() => {});
-    musicStarted = true;
-  }
-
-  // Stop all videos
   document.querySelectorAll("video").forEach(v => {
     v.pause();
     v.currentTime = 0;
   });
 
-  // Play video on active page
-  const pageIndex = pageFlip.getCurrentPageIndex();
-  const currentPage = pageFlip.getPage(pageIndex);
+  const index = pageFlip.getCurrentPageIndex();
+  const page = pageFlip.getPage(index);
 
-  if (currentPage) {
-    const video = currentPage.querySelector("video");
-    if (video) video.play();
+  if (page) {
+    const video = page.querySelector("video");
+    if (video) {
+      video.play().catch(() => {});
+    }
   }
 });
