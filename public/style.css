@@ -99,16 +99,10 @@ html, body {
 
 /* ROTATION ANIMATION */
 @keyframes rotatePhone {
-  0% {
+  0%, 40% {
     transform: rotate(0deg);
   }
-  40% {
-    transform: rotate(0deg);
-  }
-  60% {
-    transform: rotate(90deg);
-  }
-  100% {
+  60%, 100% {
     transform: rotate(90deg);
   }
 }

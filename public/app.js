@@ -1,18 +1,19 @@
 import * as pdfjsLib from "./lib/pdf.mjs";
 
-/* Load from Node proxy */
-const PDF_URL = "/pdf";
+/* ✅ LOCAL PDF (NO CORS, NO PROXY) */
+const PDF_URL = "/pdf/engagement.pdf";
 
-/* Worker */
+/* PDF WORKER */
 pdfjsLib.GlobalWorkerOptions.workerSrc = "./lib/pdf.worker.mjs";
 
-/* Config */
+/* CONFIG */
 const BOOK_WIDTH = 820;
 const BOOK_HEIGHT = 560;
 const SCALE = 1.5;
 
 const flipbook = document.getElementById("flipbook");
 
+/* LOAD PDF */
 pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   const totalPages = pdf.numPages;
   const renderTasks = [];
@@ -44,6 +45,7 @@ pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   Promise.all(renderTasks).then(initFlipbook);
 });
 
+/* INIT FLIPBOOK */
 function initFlipbook() {
   $("#flipbook").turn({
     width: BOOK_WIDTH,
