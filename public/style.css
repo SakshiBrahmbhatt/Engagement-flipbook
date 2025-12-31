@@ -1,72 +1,133 @@
-body {
+* {
+  box-sizing: border-box;
+}
+
+/* RESET */
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
   background: #58140a;
-  font-family: 'Playfair Display', serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: Georgia, serif;
+}
+
+/* MAIN APP */
+#app {
+  width: 100vw;
   height: 100vh;
-}
-
-.book-wrapper {
-  width: min(900px, 95vw);
-  height: min(550px, 85vh);
-}
-
-/* Page base */
-.page {
-  background: #fff8f2;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Media */
-.page img,
-.page video {
+/* FLIPBOOK */
+#flipbook {
+  width: 820px;
+  height: 560px;
+}
+
+.page {
+  background: white;
+}
+
+.page canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
-/* Cover & End */
-.cover,
-.end {
-  flex-direction: column;
+/* ===========================
+   ROTATE OVERLAY
+=========================== */
+#rotate-overlay {
+  position: fixed;
+  inset: 0;
+  background: #58140a;
+  color: #fff;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
   text-align: center;
 }
 
-.cover h1 {
-  font-size: 42px;
-  color: #58140a;
+.rotate-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
 }
 
-.cover p {
-  letter-spacing: 3px;
-  margin-top: 10px;
+.rotate-box h2 {
+  font-size: 22px;
 }
 
-.end h2 {
-  color: #58140a;
+.rotate-box p {
+  font-size: 15px;
+  opacity: 0.85;
 }
 
-/* Bottom-right corner click area */
-.corner {
+/* PHONE ICON */
+.phone-icon {
+  width: 80px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: rotatePhone 2s infinite ease-in-out;
+}
+
+.phone {
+  width: 50px;
+  height: 90px;
+  border: 3px solid white;
+  border-radius: 10px;
+  position: relative;
+}
+
+.phone::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 70px;
-  height: 70px;
-  cursor: pointer;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Visual hint for corner */
-.corner::after {
-  content: "›";
-  position: absolute;
-  right: 18px;
-  bottom: 12px;
-  font-size: 28px;
-  color: rgba(88, 20, 10, 0.6);
+/* ROTATION ANIMATION */
+@keyframes rotatePhone {
+  0% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+/* SHOW OVERLAY ON PORTRAIT MOBILE */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+  #rotate-overlay {
+    display: flex;
+  }
+
+  #app {
+    display: none;
+  }
+}
+
+/* RESPONSIVE BOOK */
+@media (max-width: 900px) and (orientation: landscape) {
+  #flipbook {
+    width: 95vw;
+    height: 70vh;
+  }
 }

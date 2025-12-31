@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Our Engagement | 14 December</title>
+  <meta charset="UTF-8" />
+  <title>Sakshi & Shivam | 14 December</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="book-container">
-  <div id="book">
-
-    <!-- COVER -->
-    <div class="page cover">
-      <h1>Sakshi & Shivam</h1>
-      <p>14 December 2025 to Forever</p>
+<!-- ROTATE DEVICE OVERLAY -->
+<div id="rotate-overlay">
+  <div class="rotate-box">
+    <div class="phone-icon">
+      <div class="phone"></div>
     </div>
-
-    <!-- IMAGE PAGE -->
-    <div class="page">
-      <img src="images/IMG_8084.JPG">
-    </div>
-
-    <!-- VIDEO PAGE -->
-    <div class="page video-page">
-      <video src="videos/Engagement.mp4"></video>
-    </div>
-
-    <!-- END PAGE -->
-    <div class="page end">
-      <h2>And the journey begins…</h2>
-    </div>
-
+    <h2>Rotate your device</h2>
+    <p>Please switch to landscape mode to view the flipbook</p>
   </div>
 </div>
 
-<script src="lib/page-flip.browser.min.js"></script>
-<script src="app.js"></script>
+<!-- MAIN APP -->
+<div id="app">
+  <div id="flipbook"></div>
+</div>
+
+<!-- Turn.js -->
+<script src="lib/turn.min.js"></script>
+
+<!-- App Logic -->
+<script type="module" src="app.js"></script>
+
 </body>
 </html>
