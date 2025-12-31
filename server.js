@@ -4,14 +4,14 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* Serve all static files */
+// Serve static files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-/* Root */
+// Root route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Engagement flipbook running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
