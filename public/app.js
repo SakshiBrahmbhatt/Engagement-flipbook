@@ -1,6 +1,6 @@
 import * as pdfjsLib from "./lib/pdf.mjs";
 
-/* 🔥 LOAD PDF FROM NODE PROXY */
+/* Load from Node proxy */
 const PDF_URL = "/pdf";
 
 /* Worker */
@@ -13,7 +13,6 @@ const SCALE = 1.5;
 
 const flipbook = document.getElementById("flipbook");
 
-/* Load PDF */
 pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   const totalPages = pdf.numPages;
   const renderTasks = [];
@@ -45,7 +44,6 @@ pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   Promise.all(renderTasks).then(initFlipbook);
 });
 
-/* Init flipbook */
 function initFlipbook() {
   $("#flipbook").turn({
     width: BOOK_WIDTH,
