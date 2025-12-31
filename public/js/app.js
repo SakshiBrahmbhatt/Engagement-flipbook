@@ -1,7 +1,21 @@
-const pdfUrl = "/pdf/engagement.pdf";
-const bookElement = document.getElementById("book");
+// Ensure libraries exist
+if (typeof pdfjsLib === "undefined") {
+  console.error("pdf.js not loaded");
+}
+if (typeof St === "undefined") {
+  console.error("page-flip not loaded");
+}
 
-const pageFlip = new St.PageFlip(bookElement, {
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.worker.min.js";
+
+const pdfUrl = "/pdf/engagement.pdf";
+const bookWrapper = document.getElementById("book-wrapper");
+const overlay = document.getElementById("rotate-overlay");
+const book = document.getElementById("book");
+
+// Create flipbook
+const pageFlip = new St.PageFlip(book, {
   width: 550,
   height: 700,
   size: "stretch",
@@ -14,10 +28,10 @@ const pageFlip = new St.PageFlip(bookElement, {
   mobileScrollSupport: false
 });
 
-// Load PDF and convert to images
+// Load PDF → Images
 async function loadPDF() {
   const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-  const pages = [];
+  const images = [];
 
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
@@ -32,30 +46,25 @@ async function loadPDF() {
 
     const img = document.createElement("img");
     img.src = canvas.toDataURL("image/jpeg", 1.0);
-    pages.push(img);
+    images.push(img);
   }
 
-  pageFlip.loadFromImages(pages);
+  pageFlip.loadFromImages(images);
 }
 
 loadPDF();
 
-// Orientation handling
+// Orientation logic
 function checkOrientation() {
-  const overlay = document.getElementById("rotate-overlay");
-  const bookWrapper = document.getElementById("book-wrapper");
-
   const isMobile = window.innerWidth <= 768;
   const isPortrait = window.innerHeight > window.innerWidth;
 
   if (isMobile && isPortrait) {
     overlay.style.display = "flex";
     bookWrapper.style.display = "none";
-    document.body.style.overflow = "hidden";
   } else {
     overlay.style.display = "none";
     bookWrapper.style.display = "flex";
-    document.body.style.overflow = "hidden";
   }
 }
 
