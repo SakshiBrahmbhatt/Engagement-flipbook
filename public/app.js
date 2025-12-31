@@ -1,60 +1,92 @@
 import * as pdfjsLib from "./lib/pdf.mjs";
 
-/* ✅ LOCAL PDF (NO CORS, NO PROXY) */
+/* LOCAL PDF */
 const PDF_URL = "/pdf/engagement.pdf";
 
 /* PDF WORKER */
 pdfjsLib.GlobalWorkerOptions.workerSrc = "./lib/pdf.worker.mjs";
 
-/* CONFIG */
-const BOOK_WIDTH = 820;
-const BOOK_HEIGHT = 560;
-const SCALE = 1.5;
+/* BOOK SIZE */
+const BOOK_WIDTH = Math.min(window.innerWidth * 0.9, 900);
+const BOOK_HEIGHT = Math.min(window.innerHeight * 0.8, 600);
 
 const flipbook = document.getElementById("flipbook");
 
 /* LOAD PDF */
-pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
+pdfjsLib.getDocument(PDF_URL).promise.then(async pdf => {
   const totalPages = pdf.numPages;
-  const renderTasks = [];
 
-  for (let i = 1; i <= totalPages; i++) {
-    renderTasks.push(
-      pdf.getPage(i).then(page => {
-        const pageDiv = document.createElement("div");
-        pageDiv.className = "page";
+  /* ---------- PAGE 1 (SINGLE COVER) ---------- */
+  await renderPdfPage(pdf, 1);
 
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+  /* Insert BLANK PAGE after cover */
+  addBlankPage();
 
-        const viewport = page.getViewport({ scale: SCALE });
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        pageDiv.appendChild(canvas);
-        flipbook.appendChild(pageDiv);
-
-        return page.render({
-          canvasContext: ctx,
-          viewport
-        }).promise;
-      })
-    );
+  /* ---------- MIDDLE PAGES (PAIRS) ---------- */
+  for (let i = 2; i <= totalPages - 1; i++) {
+    await renderPdfPage(pdf, i);
   }
 
-  Promise.all(renderTasks).then(initFlipbook);
+  /* If total pages is EVEN, add blank before last */
+  if (totalPages % 2 === 0) {
+    addBlankPage();
+  }
+
+  /* ---------- LAST PAGE (SINGLE BACK) ---------- */
+  await renderPdfPage(pdf, totalPages);
+
+  initFlipbook();
 });
 
-/* INIT FLIPBOOK */
+/* RENDER PDF PAGE */
+async function renderPdfPage(pdf, pageNumber) {
+  const page = await pdf.getPage(pageNumber);
+
+  const pageDiv = document.createElement("div");
+  pageDiv.className = "page";
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const viewport = page.getViewport({ scale: 1 });
+
+  const scale = Math.min(
+    BOOK_WIDTH / viewport.width,
+    BOOK_HEIGHT / viewport.height
+  );
+
+  const scaledViewport = page.getViewport({ scale });
+
+  canvas.width = scaledViewport.width;
+  canvas.height = scaledViewport.height;
+
+  pageDiv.appendChild(canvas);
+  flipbook.appendChild(pageDiv);
+
+  await page.render({
+    canvasContext: ctx,
+    viewport: scaledViewport
+  }).promise;
+}
+
+/* BLANK PAGE (FOR ALIGNMENT) */
+function addBlankPage() {
+  const blank = document.createElement("div");
+  blank.className = "page";
+  blank.style.background = "transparent";
+  flipbook.appendChild(blank);
+}
+
+/* INIT TURN.JS */
 function initFlipbook() {
   $("#flipbook").turn({
     width: BOOK_WIDTH,
     height: BOOK_HEIGHT,
     autoCenter: true,
+    display: "double",
     elevation: 60,
     gradients: true,
-    duration: 1200,
-    display: "double",
+    duration: 1000,
     acceleration: true
   });
 }
