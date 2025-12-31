@@ -1,20 +1,19 @@
 import * as pdfjsLib from "./lib/pdf.mjs";
 
-/* GOOGLE DRIVE PDF */
-const PDF_URL =
-  "https://drive.google.com/uc?export=download&id=10md4h5_xQLxWtrfb-FS7EN7-fUFOiMj9";
+/* 🔥 LOAD PDF FROM NODE PROXY */
+const PDF_URL = "/pdf";
 
-/* PDF WORKER */
+/* Worker */
 pdfjsLib.GlobalWorkerOptions.workerSrc = "./lib/pdf.worker.mjs";
 
-/* CONFIG */
+/* Config */
 const BOOK_WIDTH = 820;
 const BOOK_HEIGHT = 560;
 const SCALE = 1.5;
 
 const flipbook = document.getElementById("flipbook");
 
-/* LOAD PDF */
+/* Load PDF */
 pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   const totalPages = pdf.numPages;
   const renderTasks = [];
@@ -46,7 +45,7 @@ pdfjsLib.getDocument(PDF_URL).promise.then(pdf => {
   Promise.all(renderTasks).then(initFlipbook);
 });
 
-/* INIT FLIPBOOK */
+/* Init flipbook */
 function initFlipbook() {
   $("#flipbook").turn({
     width: BOOK_WIDTH,

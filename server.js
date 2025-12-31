@@ -1,31 +1,31 @@
 const express = require("express");
 const path = require("path");
+const https = require("https");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/*
-  Serve everything inside /public
-  This includes:
-  - index.html
-  - style.css
-  - app.js (ES module)
-  - lib/pdf.mjs
-  - lib/pdf.worker.mjs
-  - lib/turn.min.js
-*/
+/* Serve frontend */
 app.use(express.static(path.join(__dirname, "public")));
 
-/*
-  Root route
-*/
+/* Root */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-/*
-  Start server
-*/
+/* 🔥 PDF PROXY (FIXES CORS) */
+app.get("/pdf", (req, res) => {
+  const fileId = "10md4h5_xQLxWtrfb-FS7EN7-fUFOiMj9";
+  const driveUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+  https.get(driveUrl, driveRes => {
+    res.setHeader("Content-Type", "application/pdf");
+    driveRes.pipe(res);
+  }).on("error", err => {
+    res.status(500).send("Failed to load PDF");
+  });
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Engagement flipbook running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });

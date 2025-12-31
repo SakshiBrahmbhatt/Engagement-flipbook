@@ -4,32 +4,34 @@
   <meta charset="UTF-8" />
   <title>Sakshi & Shivam | 14 December</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ROTATE DEVICE OVERLAY -->
+<!-- ROTATE OVERLAY -->
 <div id="rotate-overlay">
   <div class="rotate-box">
     <div class="phone-icon">
       <div class="phone"></div>
     </div>
     <h2>Rotate your device</h2>
-    <p>Please switch to landscape mode to view the flipbook</p>
+    <p>Please switch to landscape mode</p>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app">
   <div id="flipbook"></div>
 </div>
 
+<!-- ✅ jQuery MUST COME FIRST -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <!-- Turn.js -->
 <script src="lib/turn.min.js"></script>
 
-<!-- App Logic -->
+<!-- App -->
 <script type="module" src="app.js"></script>
 
 </body>
